@@ -1,19 +1,11 @@
 package com.udacity.jdnd.course3.critter.pet;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.udacity.jdnd.course3.critter.user.customer.Customer;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 public class Pet {
     @Id
     @GeneratedValue
@@ -23,8 +15,9 @@ public class Pet {
     private PetType type;
     private String name;
 
-    private LocalDateTime birthDate;
-    @ElementCollection
-    private List<String> notes;
+    @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.ALL)
+    private Customer customer;
 
+    private LocalDate birthDate;
+    private String notes;
 }
