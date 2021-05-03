@@ -21,7 +21,7 @@ import java.util.Set;
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long scheduleId;
 
     @ManyToMany(targetEntity = Employee.class)
     private List<Employee> employees;
@@ -33,4 +33,15 @@ public class Schedule {
 
     @ElementCollection
     private Set<EmployeeSkill> activities;
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "scheduleId=" + scheduleId +
+                ", employees=" + employees +
+                ", pets=" + pets +
+                ", date=" + date +
+                ", activities=" + activities +
+                '}';
+    }
 }

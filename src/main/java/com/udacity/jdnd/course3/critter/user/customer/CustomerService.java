@@ -23,7 +23,7 @@ public class CustomerService {
         return customerList;
     }
 
-    public Customer find(Long id) {
+    public Customer getById(Long id) {
         return repository.findById(id).orElseThrow(() -> {throw new IllegalStateException(
                 "No such customer with id: " + id
         );});

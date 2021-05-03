@@ -14,12 +14,15 @@ public class PetService {
     private final PetRepository repository;
     private final CustomerService customerService;
 
-    public Pet getPet(Long petId) {
-        return repository.getOne(petId);
+    public Pet getById(Long petId) {
+        return repository.findById(petId).orElseThrow(() -> {throw  new IllegalStateException(
+                "There is no such pet with id: <" + petId + ">"
+            );
+        });
     }
 
     public Pet save(Long ownerId, Pet pet) {
-        Customer customer = customerService.find(ownerId);
+        Customer customer = customerService.getById(ownerId);
         pet.setCustomer(customer);
         Pet savedPet = repository.save(pet);
         customer.addPet(savedPet);
@@ -37,5 +40,9 @@ public class PetService {
 
     public List<Pet> findAll(List<Long> petIds) {
         return repository.findAllById(petIds);
+    }
+
+    public List<Pet> getAll(List<Long> petsIds) {
+        return repository.findAllById(petsIds);
     }
 }

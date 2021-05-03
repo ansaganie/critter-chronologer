@@ -23,8 +23,12 @@ public class EmployeeService {
         return repository.save(employee);
     }
 
-    public Employee get(Long id) {
-        return repository.getOne(id);
+    public Employee getById(Long id) {
+        return repository.findById(id).orElseThrow(() -> {
+            throw new IllegalStateException(
+                    "There is no such employee with id: <" + id + ">"
+            );
+        });
     }
 
     public void setAvailability(Set<DayOfWeek> daysAvailable, Long id) {
@@ -38,5 +42,9 @@ public class EmployeeService {
         return employeeList.stream().filter(
                 employee ->
                         employee.getSkills().containsAll(skills)).collect(Collectors.toList());
+    }
+
+    public List<Employee> getAll(List<Long> employeeIds) {
+        return repository.findAllById(employeeIds);
     }
 }

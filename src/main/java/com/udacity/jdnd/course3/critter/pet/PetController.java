@@ -1,15 +1,11 @@
 package com.udacity.jdnd.course3.critter.pet;
 
-import com.udacity.jdnd.course3.critter.user.customer.Customer;
-import com.udacity.jdnd.course3.critter.user.customer.CustomerService;
-import com.udacity.jdnd.course3.critter.user.employee.Employee;
-import com.udacity.jdnd.course3.critter.user.employee.EmployeeDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Handles web requests related to Pets.
@@ -20,7 +16,6 @@ import java.util.List;
 public class PetController {
 
     private final PetService petService;
-    private final CustomerService customerService;
 
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
@@ -31,23 +26,17 @@ public class PetController {
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable Long petId) {
-        return convertPetToDTO(petService.getPet(petId));
+        return convertPetToDTO(petService.getById(petId));
     }
 
     @GetMapping
     public List<PetDTO> getPets(){
-        List<Pet> pets = petService.findAll();
-        List<PetDTO> petDTOs = new ArrayList<>();
-        pets.forEach(pet -> petDTOs.add(convertPetToDTO(pet)));
-        return petDTOs;
+        return petService.findAll().stream().map(this::convertPetToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable Long ownerId) {
-        List<Pet> pets = petService.getPetsByOwner(ownerId);
-        List<PetDTO> petDTOs = new ArrayList<>();
-        pets.forEach(pet -> petDTOs.add(convertPetToDTO(pet)));
-        return petDTOs;
+        return petService.getPetsByOwner(ownerId).stream().map(this::convertPetToDTO).collect(Collectors.toList());
     }
 
     private PetDTO convertPetToDTO(Pet pet) {
@@ -60,7 +49,6 @@ public class PetController {
     private Pet convertDTOToPet(PetDTO petDTO) {
         Pet pet = new Pet();
         BeanUtils.copyProperties(petDTO, pet);
-        System.out.println("Convert DTO to pet: pet" + pet);
         return pet;
     }
 }

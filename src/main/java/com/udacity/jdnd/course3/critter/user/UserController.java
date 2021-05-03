@@ -1,7 +1,6 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import com.udacity.jdnd.course3.critter.pet.Pet;
-import com.udacity.jdnd.course3.critter.pet.PetController;
 import com.udacity.jdnd.course3.critter.pet.PetService;
 import com.udacity.jdnd.course3.critter.user.customer.Customer;
 import com.udacity.jdnd.course3.critter.user.customer.CustomerDTO;
@@ -57,7 +56,7 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable Long petId){
-        Pet pet = petService.getPet(petId);
+        Pet pet = petService.getById(petId);
         Customer customer = pet.getCustomer();
         return convertCustomerToDTO(customer);
     }
@@ -70,7 +69,7 @@ public class UserController {
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable Long employeeId) {
-        return convertEmployeeToDTO(employeeService.get(employeeId));
+        return convertEmployeeToDTO(employeeService.getById(employeeId));
     }
 
     @PutMapping("/employee/{employeeId}")
