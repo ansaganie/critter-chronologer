@@ -1,11 +1,14 @@
 package com.udacity.jdnd.course3.critter.user.customer;
 
+import lombok.ToString;
+
 import java.util.List;
 
 /**
  * Represents the form that customer request and response data takes. Does not map
  * to the database directly.
  */
+@ToString
 public class CustomerDTO {
     private long id;
     private String name;

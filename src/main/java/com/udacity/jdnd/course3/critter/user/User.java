@@ -5,13 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 /**
-@MappedSupperclass - because there is no need for polymorphic data fetching, and as I understood there is not need
+MappedSupperClass - because there is no need for polymorphic data fetching, and as I understood there is not need
 for User Entity as a separate table for now
 */
 
@@ -22,7 +19,7 @@ for User Entity as a separate table for now
 @Setter
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)

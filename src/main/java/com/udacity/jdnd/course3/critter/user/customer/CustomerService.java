@@ -1,7 +1,6 @@
 package com.udacity.jdnd.course3.critter.user.customer;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,6 +18,14 @@ public class CustomerService {
     }
 
     public List<Customer> findAll() {
-        return repository.findAll();
+        List<Customer> customerList = repository.findAll();
+        System.out.println(customerList);
+        return customerList;
+    }
+
+    public Customer find(Long id) {
+        return repository.findById(id).orElseThrow(() -> {throw new IllegalStateException(
+                "No such customer with id: " + id
+        );});
     }
 }

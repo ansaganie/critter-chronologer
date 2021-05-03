@@ -37,17 +37,22 @@ public class UserController {
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
-        Customer customer = customerService.save(convertDTOToCustomer(customerDTO));
-        customerDTO.setId(customer.getId());
-        return customerDTO;
+        Customer customer = convertDTOToCustomer(customerDTO);
+        if (customerDTO.getPetIds() != null && customerDTO.getPetIds().size() > 0) {
+            List<Pet> pets = petService.findAll(customerDTO.getPetIds());
+            customer.setPets(pets);
+        }
+        Customer savedCustomer = customerService.save(customer);
+        return convertCustomerToDTO(savedCustomer);
     }
 
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers(){
-        List<Customer> customerList = customerService.findAll();
-        List<CustomerDTO> customerDTOList = new ArrayList<>();
-        customerList.forEach(customer -> customerDTOList.add(convertCustomerToDTO(customer)));
-        return customerDTOList;
+
+        return customerService.findAll().
+                stream().
+                map(this::convertCustomerToDTO).
+                collect(Collectors.toList());
     }
 
     @GetMapping("/customer/pet/{petId}")

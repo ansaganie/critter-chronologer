@@ -2,15 +2,10 @@ package com.udacity.jdnd.course3.critter.user.customer;
 
 import com.udacity.jdnd.course3.critter.pet.Pet;
 import com.udacity.jdnd.course3.critter.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,4 +23,9 @@ public class Customer extends User {
 
     @OneToMany(targetEntity = Pet.class, mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Pet> pets;
+
+    public void addPet(Pet pet) {
+        if (pets == null) pets = new ArrayList<>();
+        pets.add(pet);
+    }
 }

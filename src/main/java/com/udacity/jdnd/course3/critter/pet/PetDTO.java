@@ -1,16 +1,19 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import lombok.ToString;
+
 import java.time.LocalDate;
 
 /**
  * Represents the form that pet request and response data takes. Does not map
  * to the database directly.
  */
+
 public class PetDTO {
-    private long id;
+    private Long petId;
     private PetType type;
     private String name;
-    private long ownerId;
+    private Long ownerId;
     private LocalDate birthDate;
     private String notes;
 
@@ -54,11 +57,23 @@ public class PetDTO {
         this.notes = notes;
     }
 
-    public long getId() {
-        return id;
+    public Long getPetId() {
+        return petId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPetId(Long petId) {
+        this.petId = petId;
+    }
+
+    @Override
+    public String toString() {
+        return "PetDTO{" +
+                "petId=" + petId +
+                ", type=" + type +
+                ", name='" + name + '\'' +
+                ", ownerId=" + ownerId +
+                ", birthDate=" + birthDate +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 }
