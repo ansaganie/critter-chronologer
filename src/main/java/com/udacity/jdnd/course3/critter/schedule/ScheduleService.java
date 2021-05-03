@@ -32,7 +32,11 @@ public class ScheduleService {
     }
 
     public List<Schedule> getAll() {
-        return repository.findAll();
+        List<Schedule> schedules = repository.findAll();
+        if (schedules.size() == 0) throw new IllegalStateException(
+                "There is no schedules yet"
+        );
+        else return schedules;
     }
 
     public List<Schedule> getAllByPetId(Long petId) {

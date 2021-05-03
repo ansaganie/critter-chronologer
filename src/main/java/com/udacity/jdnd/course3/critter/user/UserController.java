@@ -14,7 +14,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public class UserController {
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
         Customer customer = convertDTOToCustomer(customerDTO);
         if (customerDTO.getPetIds() != null && customerDTO.getPetIds().size() > 0) {
-            List<Pet> pets = petService.findAll(customerDTO.getPetIds());
+            List<Pet> pets = petService.getAll(customerDTO.getPetIds());
             customer.setPets(pets);
         }
         Customer savedCustomer = customerService.save(customer);
@@ -79,11 +78,9 @@ public class UserController {
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        List<Employee> availableEmployees = employeeService
-                .getAllAvailableEmployees(employeeDTO.getDate(), employeeDTO.getSkills());
-        List<EmployeeDTO> employeeDTOList = new ArrayList<>();
-        availableEmployees.forEach(employee -> employeeDTOList.add(convertEmployeeToDTO(employee)));
-        return employeeDTOList;
+        return employeeService.getAllAvailableEmployees(employeeDTO.getDate(), employeeDTO.getSkills())
+                .stream().map(this::convertEmployeeToDTO)
+                .collect(Collectors.toList());
     }
 
 

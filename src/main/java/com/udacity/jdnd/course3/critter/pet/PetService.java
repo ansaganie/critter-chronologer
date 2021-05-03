@@ -5,10 +5,12 @@ import com.udacity.jdnd.course3.critter.user.customer.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class PetService {
 
     private final PetRepository repository;
@@ -30,19 +32,20 @@ public class PetService {
         return savedPet;
     }
 
-    public List<Pet> findAll() {
-        return repository.findAll();
+    public List<Pet> getAll() {
+        List<Pet> pets = repository.findAll();
+        if (pets.size() == 0) throw new IllegalStateException("There is no pets yet");
+        else return pets;
     }
 
     public List<Pet> getPetsByOwner(Long ownerId) {
-        return repository.findAllByCustomer_Id(ownerId);
-    }
-
-    public List<Pet> findAll(List<Long> petIds) {
-        return repository.findAllById(petIds);
+        Customer customer = customerService.getById(ownerId);
+        return repository.findAllByCustomer(customer);
     }
 
     public List<Pet> getAll(List<Long> petsIds) {
-        return repository.findAllById(petsIds);
+        List<Pet> pets = repository.findAllById(petsIds);
+        if (pets.size() == 0) throw new IllegalStateException("There is no pets with ids = <" + pets + ">");
+        else return pets;
     }
 }

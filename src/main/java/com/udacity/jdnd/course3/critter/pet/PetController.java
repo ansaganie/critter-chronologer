@@ -31,7 +31,7 @@ public class PetController {
 
     @GetMapping
     public List<PetDTO> getPets(){
-        return petService.findAll().stream().map(this::convertPetToDTO).collect(Collectors.toList());
+        return petService.getAll().stream().map(this::convertPetToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/owner/{ownerId}")

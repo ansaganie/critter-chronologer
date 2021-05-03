@@ -19,8 +19,8 @@ public class CustomerService {
 
     public List<Customer> findAll() {
         List<Customer> customerList = repository.findAll();
-        System.out.println(customerList);
-        return customerList;
+        if (customerList.size() == 0) throw new IllegalStateException("There is no customer yet");
+        else return customerList;
     }
 
     public Customer getById(Long id) {

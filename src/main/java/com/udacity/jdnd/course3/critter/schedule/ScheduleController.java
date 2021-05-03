@@ -22,10 +22,8 @@ public class ScheduleController {
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         Schedule schedule = convertDTOToSchedule(scheduleDTO);
-
         Schedule savedSchedule = scheduleService.save(schedule,
                 scheduleDTO.getEmployeeIds(), scheduleDTO.getPetIds());
-        System.out.println(savedSchedule);
         return convertScheduleToDTO(savedSchedule);
     }
 

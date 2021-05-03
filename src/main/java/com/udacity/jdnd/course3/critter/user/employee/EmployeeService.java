@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,19 +30,23 @@ public class EmployeeService {
     }
 
     public void setAvailability(Set<DayOfWeek> daysAvailable, Long id) {
-        Employee employee = repository.getOne(id);
+        Employee employee = getById(id);
         employee.setDaysAvailable(daysAvailable);
         repository.save(employee);
     }
 
     public List<Employee> getAllAvailableEmployees(LocalDate date, Set<EmployeeSkill> skills) {
-        List<Employee> employeeList = repository.findAllByDaysAvailableContains(date.getDayOfWeek());
+        List<Employee> employeeList = repository.getAllByDaysAvailableContains(date.getDayOfWeek());
+
         return employeeList.stream().filter(
-                employee ->
-                        employee.getSkills().containsAll(skills)).collect(Collectors.toList());
+                employee -> employee.getSkills().containsAll(skills)).collect(Collectors.toList());
     }
 
     public List<Employee> getAll(List<Long> employeeIds) {
-        return repository.findAllById(employeeIds);
+        List<Employee> employees = repository.findAllById(employeeIds);
+        if (employees.size() == 0) throw  new IllegalStateException(
+                "There is no employees with ids: <" + employees + ">"
+        );
+        else return employees;
     }
 }
