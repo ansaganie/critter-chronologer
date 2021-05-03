@@ -21,11 +21,15 @@ public class Pet {
 
     @Enumerated(EnumType.STRING)
     private PetType type;
+
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.ALL)
     private Customer customer;
 
     private LocalDate birthDate;
+
+    @Column(length = 500)
     private String notes;
 }

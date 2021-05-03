@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
@@ -18,7 +19,11 @@ import java.util.List;
 @Getter
 @Setter
 public class Customer extends User {
+
+    @Column(length = 100, nullable = false)
     private String phoneNumber;
+
+    @Column(length = 500)
     private String notes;
 
     @OneToMany(targetEntity = Pet.class, mappedBy = "customer", cascade = CascadeType.ALL)
